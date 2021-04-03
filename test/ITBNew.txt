@@ -1,0 +1,65 @@
+8
+-6.891509496484399 107.61065830276064 ITB
+-6.8935330427310495 107.6113544885879 Salman
+-6.8939573727409735 107.61375952392943 Borromeus
+-6.884796195014755 107.61344334456452 McDonalds
+-6.890103557331552 107.60678324669568 Bonbin
+-6.886126207880167 107.60768912207627 Sabuga
+-6.889759667617541 107.6128975792638 SPBU_Dago
+-6.88518040257786 107.61107683540811 Baksil
+ITB ITB
+ITB Salman
+ITB Borromeus
+ITB McDonalds
+ITB Bonbin
+ITB Sabuga
+ITB SPBU_Dago
+ITB Baksil
+Salman ITB
+Salman Salman
+Salman Borromeus
+Salman McDonalds
+Salman Bonbin
+Salman Sabuga
+Salman SPBU_Dago
+Salman Baksil
+Borromeus ITB
+Borromeus Salman
+Borromeus Borromeus
+Borromeus McDonalds
+Borromeus Bonbin
+Borromeus Sabuga
+Borromeus SPBU_Dago
+Borromeus Baksil
+Bonbin ITB
+Bonbin Salman
+Bonbin Borromeus
+Bonbin Bonbin
+Bonbin McDonalds
+Bonbin Sabuga
+Bonbin SPBU_Dago
+Bonbin Baksil
+Sabuga ITB
+Sabuga Salman
+Sabuga Borromeus
+Sabuga Bonbin
+Sabuga McDonalds
+Sabuga Sabuga
+Sabuga SPBU_Dago
+Sabuga Baksil
+SPBU_Dago ITB
+SPBU_Dago Salman
+SPBU_Dago Borromeus
+SPBU_Dago Bonbin
+SPBU_Dago McDonalds
+SPBU_Dago Sabuga
+SPBU_Dago SPBU_Dago
+SPBU_Dago Baksil
+Baksil ITB
+Baksil Salman
+Baksil Borromeus
+Baksil Bonbin
+Baksil McDonalds
+Baksil Sabuga
+Baksil SPBU_Dago
+Baksil Baksil

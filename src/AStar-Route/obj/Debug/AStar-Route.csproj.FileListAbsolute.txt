@@ -26,3 +26,9 @@ C:\Users\USER\Documents\Git\AStar-Route\src\AStar-Route\obj\Debug\AStar-Route.cs
 C:\Users\USER\Documents\Git\AStar-Route\src\AStar-Route\obj\Debug\AStar-Route.csproj.CopyComplete
 C:\Users\USER\Documents\Git\AStar-Route\src\AStar-Route\obj\Debug\AStar-Route.exe
 C:\Users\USER\Documents\Git\AStar-Route\src\AStar-Route\obj\Debug\AStar-Route.pdb
+C:\Users\USER\Documents\Git\AStar-Route\src\AStar-Route\bin\Debug\Microsoft.Msagl.dll
+C:\Users\USER\Documents\Git\AStar-Route\src\AStar-Route\bin\Debug\Microsoft.Msagl.xml
+C:\Users\USER\Documents\Git\AStar-Route\src\AStar-Route\bin\Debug\AutomaticGraphLayout.dll
+C:\Users\USER\Documents\Git\AStar-Route\src\AStar-Route\bin\Debug\AutomaticGraphLayout.Drawing.dll
+C:\Users\USER\Documents\Git\AStar-Route\src\AStar-Route\bin\Debug\Microsoft.Msagl.GraphViewerGdi.dll
+C:\Users\USER\Documents\Git\AStar-Route\src\AStar-Route\bin\Debug\Microsoft.Msagl.WpfGraphControl.dll
