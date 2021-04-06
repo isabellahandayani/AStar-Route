@@ -30,6 +30,7 @@ namespace AStar_Route
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.button3 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
@@ -38,7 +39,7 @@ namespace AStar_Route
             this.button1 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.button3 = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -54,6 +55,7 @@ namespace AStar_Route
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.label3);
             this.splitContainer1.Panel1.Controls.Add(this.button3);
             this.splitContainer1.Panel1.Controls.Add(this.label2);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
@@ -61,13 +63,27 @@ namespace AStar_Route
             this.splitContainer1.Panel1.Controls.Add(this.comboBox1);
             this.splitContainer1.Panel1.Controls.Add(this.button2);
             this.splitContainer1.Panel1.Controls.Add(this.button1);
+            this.splitContainer1.Panel1.UseWaitCursor = true;
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.pictureBox1);
+            this.splitContainer1.Panel2.UseWaitCursor = true;
             this.splitContainer1.Size = new System.Drawing.Size(1263, 632);
             this.splitContainer1.SplitterDistance = 419;
             this.splitContainer1.TabIndex = 0;
+            this.splitContainer1.UseWaitCursor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(128, 382);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(163, 38);
+            this.button3.TabIndex = 6;
+            this.button3.Text = "Submit";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Visible = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // label2
             // 
@@ -77,6 +93,7 @@ namespace AStar_Route
             this.label2.Size = new System.Drawing.Size(55, 20);
             this.label2.TabIndex = 5;
             this.label2.Text = "Target";
+            this.label2.UseWaitCursor = true;
             this.label2.Visible = false;
             // 
             // label1
@@ -143,26 +160,29 @@ namespace AStar_Route
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // button3
+            // label3
             // 
-            this.button3.Location = new System.Drawing.Point(128, 382);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(163, 38);
-            this.button3.TabIndex = 6;
-            this.button3.Text = "Submit";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Visible = false;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(134, 335);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(50, 20);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Cost :";
+            this.label3.UseWaitCursor = true;
+            this.label3.Visible = false;
             // 
-            // Form1
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1263, 632);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "Form1";
+            this.Name = "Main";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
+            this.UseWaitCursor = true;
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -185,6 +205,7 @@ namespace AStar_Route
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label3;
     }
 }
 

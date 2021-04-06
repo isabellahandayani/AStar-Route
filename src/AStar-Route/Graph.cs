@@ -7,25 +7,50 @@ namespace AStar_Route
 {
     class Graph
     {
+        // Attribute
+
+        // MSAGL graph
         private Microsoft.Msagl.Drawing.Graph MSAGLform;
+
+        // Dictionary of nodes and its point
         private Dictionary<string, Point> nodeLst;
+
+        // Adjacency Dictionary
         private Dictionary<string, List<string>> adjLst;
+
+        // Edge of MSAGL graph
         private Dictionary<(string, string), Microsoft.Msagl.Drawing.Edge> GUIEdge;
 
+
+        //ctor
         public Graph(String filepath)
         {
+            /* Kamus */
+            /*
+            file, nodeInfo, edgeInfo : array of string
+            numNodes : int
+            source, target : string
+            edge : var
+            */
+
+            /* Algoritma */
+
+            // init Attribute
             nodeLst = new Dictionary<string, Point>();
             MSAGLform = new Microsoft.Msagl.Drawing.Graph();
             adjLst = new Dictionary<string, List<string>>();
             GUIEdge = new Dictionary<(string, string), Microsoft.Msagl.Drawing.Edge>();
 
 
+            // Read file
             string [] file = System.IO.File.ReadAllLines(filepath);
+            
+            // get number of nodes
             int numNodes = int.Parse(file[0]);
 
 
 
-            // saves all nodes 
+            // saves all nodes and its point 
             for(int i = 1; i < (numNodes + 1); i++)
             {
                 string[] nodeInfo = file[i].Split(' ');
@@ -33,7 +58,7 @@ namespace AStar_Route
                 adjLst.Add(nodeInfo[2], new List<string>());
             }
 
-
+            // Saves edge between node and create MSAGL Graph
             for(int j = nodeLst.Count + 1; j < file.Length; j++)
             {
                 string[] edgeInfo = file[j].Split(' ');
@@ -58,17 +83,27 @@ namespace AStar_Route
         }
 
 
+        // Haversine formula
         public double haversine(string source, string target)
         {
+            /* KAMUS */
+            /*
+               lon, lat, a, d : double
+             */
+            
+            /* ALGORITMA */
+
 
             // Haversine formula taken from https://user-images.githubusercontent.com/2789198/27240436-e9a459da-52d4-11e7-8f84-f96d0b312859.png
-            double lon = (Math.PI/180) * (nodeLst[source].getLon() - nodeLst[target].getLon());
-            double lat = (Math.PI/180) *(nodeLst[source].getLat() - nodeLst[target].getLat());
+            double lon = (Math.PI/180) * (nodeLst[target].getLon() - nodeLst[source].getLon());
+            double lat = (Math.PI/180) *(nodeLst[target].getLat() - nodeLst[source].getLat());
             double a = Math.Pow(Math.Sin(lat / 2), 2) + Math.Cos((Math.PI / 180) * nodeLst[target].getLat()) * Math.Cos((Math.PI / 180) * nodeLst[source].getLat()) * Math.Pow(Math.Sin(lon / 2), 2);
             double d = Math.Sqrt(a);
+            System.Diagnostics.Debug.WriteLine(source + " " + target + " " + 2 * 6371 * Math.Asin(d));
             return 2 * 6371 * Math.Asin(d);   
         }
 
+        
 
         // Getter
         public Microsoft.Msagl.Drawing.Graph getMSAGLGraph()
@@ -90,6 +125,31 @@ namespace AStar_Route
         public Dictionary<(string, string), Microsoft.Msagl.Drawing.Edge> getGUIEdge()
         {
             return this.GUIEdge;
+        }
+
+        // find edge between prev and next
+        public Microsoft.Msagl.Drawing.Edge filterEdge(string prev, string next)
+        {
+            /*KAMUS*/
+            /*
+             edge = Microsoft.MSAGL.Drawing.Edge
+
+            */
+
+            /* ALGORITMA */
+
+            Microsoft.Msagl.Drawing.Edge edge;
+
+            if (GUIEdge.ContainsKey((prev,  next)))
+            {
+                edge = GUIEdge[(prev, next)];
+            }
+            else
+            {
+                edge = GUIEdge[(next, prev)];
+            }
+
+            return edge;
         }
     }
 }

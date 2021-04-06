@@ -20,17 +20,28 @@ namespace AStar_Route
             InitializeComponent();
         }
 
+        // Browse Button
         private void button1_Click(object sender, EventArgs e)
         {
+            /* KAMUS */
+            /*
+             * filename : string
+             * x : Graph
+             * graf :  Microsoft.Msagl.Drawing.Graph
+             */
+
+            // get filename
             openFileDialog1.ShowDialog();
             string filename = openFileDialog1.FileName;
-            Graph x = new Graph(filename);
-            currGraph = x;
 
-            Microsoft.Msagl.Drawing.Graph graf = x.getMSAGLGraph();
+            // Construct graph
+            currGraph = new Graph(filename);
+
+            // Print Graph
+            Microsoft.Msagl.Drawing.Graph graf = currGraph.getMSAGLGraph();
             visualizeGraph(graf);
-            splitContainer1.Panel1.ResetText();
 
+            // Hide first page show second page
             button1.Visible = false;
             button2.Visible = true;
             button3.Visible = true;
@@ -39,15 +50,29 @@ namespace AStar_Route
             comboBox1.Visible = true;
             comboBox2.Visible = true;
 
-            addNode(x, 1);
-            addNode(x, 2);
 
+            // Add Nodes to Combobox
+            addNode(currGraph, 1);
+            addNode(currGraph, 2);
         }
 
+        // Print Graph
         private void visualizeGraph(Microsoft.Msagl.Drawing.Graph Graf)
         {
-            if(pictureBox1.Image != null) pictureBox1.Image = null;
+            /* Kamus */
+            /*
+             * renderer : Microsoft.Msagl.GraphViewerGdi.GraphRenderer
+             * width, height : int
+             * bitmap : Bitmap
+             */
+
+            /* ALGORITMA */
+
+            // clear picturebox if there are any image
+            if (pictureBox1.Image != null) pictureBox1.Image = null;
             Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(Graf);
+            
+            // Calculate layout dimension
             renderer.CalculateLayout();
 
             int width;
@@ -70,27 +95,40 @@ namespace AStar_Route
             pictureBox1.Image = bitmap;
         }
 
+        /* Reset button*/
         private void button2_Click(object sender, EventArgs e)
         {
+            /* KAMUS */
+            /*
+             * Main : Form
+            */
+
+            /* Algoritma */
+
             this.Hide();
             Form Main = new Main();
             Main.Show();
 
         }
 
+        // Add node to combobox
         private void addNode(Graph graph, int y)
         {
+            /* ALGORITMA */
 
+            // Check Which combobox to clear
             if(y == 1)
             {
                 comboBox1.Items.Clear();
 
             }
+
             else
             {
                 comboBox2.Items.Clear();
             }
 
+            /* add all node to combobox */
             foreach (var x in graph.getNodeLst())
             {
                 if(y == 1)
@@ -104,17 +142,26 @@ namespace AStar_Route
             }
         }
 
+        /* Change graph visualization based on node choice for combobox1 */
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Microsoft.Msagl.Drawing.Graph graf = currGraph.getMSAGLGraph();
+            /* KAMUS */
+            /*
+             * graf : Microsoft.Msagl.Drawing.Graph
+             */
 
+            /* ALGORITMA */
+
+            Microsoft.Msagl.Drawing.Graph graf = currGraph.getMSAGLGraph();
             clear(graf);
 
+            // Check if combobox1 has content to color
             if (comboBox1.GetItemText(comboBox1.SelectedItem).Length > 0)
             {
                 graf.FindNode(comboBox1.GetItemText(comboBox1.SelectedItem)).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Green;
             }
 
+            // color node
             graf.FindNode(comboBox2.GetItemText(comboBox2.SelectedItem)).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
 
             visualizeGraph(graf);
@@ -122,26 +169,46 @@ namespace AStar_Route
 
         }
 
+        /* Change graph visualization based on node choice for combobox2 */
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            /* KAMUS */
+
+            /*
+             * graf : Microsoft.Msagl.Drawing.Graph
+             * combo2Content : string
+             */
+
+            /* ALGORITMA */
+
             Microsoft.Msagl.Drawing.Graph graf = currGraph.getMSAGLGraph();
+            string combo2Content = "";
 
             clear(graf);
 
+            // Check if combobox2 has content to color
             if (comboBox2.GetItemText(comboBox2.SelectedItem).Length > 0)
             {
                 graf.FindNode(comboBox2.GetItemText(comboBox2.SelectedItem)).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
+                combo2Content = comboBox2.GetItemText(comboBox2.SelectedItem);
             }
 
             graf.FindNode(comboBox1.GetItemText(comboBox1.SelectedItem)).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Green;
 
-            visualizeGraph(graf);
-
+            // color node
             comboBox2.Items.Clear();
             addNode(currGraph, 2);
             comboBox2.Items.Remove(comboBox1.GetItemText(comboBox1.SelectedItem));
+
+            // Remove selecteditem from combobox1 in combobox2;
+            if(combo2Content.Length > 0)
+            {
+                comboBox2.SelectedItem = combo2Content;
+            }
+            visualizeGraph(graf);
         }
 
+        /* Submit button */
         private void button3_Click(object sender, EventArgs e)
         {
             if(comboBox1.GetItemText(comboBox1.SelectedItem).Length > 0 && comboBox2.GetItemText(comboBox2.SelectedItem).Length > 0)
@@ -149,6 +216,7 @@ namespace AStar_Route
 
                 string source = comboBox1.GetItemText(comboBox1.SelectedItem);
                 string target = comboBox2.GetItemText(comboBox2.SelectedItem);
+                Microsoft.Msagl.Drawing.Edge edge;
 
                 AStar search = new AStar(currGraph, source.ToString(), target.ToString());
                 if (search.getStatus() == true)
@@ -165,16 +233,18 @@ namespace AStar_Route
                             graf.FindNode(result[i]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.DodgerBlue;
                         }
 
-                        var edge = edgeLst[(prev, result[i])];
+                        edge = currGraph.filterEdge(prev, result[i]);
                         edge.Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
                         prev = result[i];
                     }
 
-                    var end = edgeLst[(prev, target)];
-                    end.Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+                    edge = currGraph.filterEdge(prev, target);
+                    edge.Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
 
 
                     visualizeGraph(graf);
+                    label3.Visible = true;
+                    label3.Text = "Cost : " + search.getVisitedCost(target).ToString();
                 }
                 else
                 {
@@ -187,13 +257,18 @@ namespace AStar_Route
             }
         }
 
+        /* Clear Msagl Graf from customized attribute */
         private void clear(Microsoft.Msagl.Drawing.Graph Graf)
         {
+            /* ALGORITMA */
+
+            // Color all node to transparent
             foreach (var x in currGraph.getNodeLst())
             {
                 Graf.FindNode(x.Key).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Transparent;
             }
 
+            // Color all edge to black
             foreach(var x in currGraph.getGUIEdge())
             {
                 x.Value.Attr.Color = Microsoft.Msagl.Drawing.Color.Black;

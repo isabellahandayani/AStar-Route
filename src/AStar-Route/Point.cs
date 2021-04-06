@@ -8,15 +8,20 @@ namespace AStar_Route
 {
     class Point
     {
-        private double lon;
-        private double lat;
 
-        public Point(double lon, double lat)
+        //Atribut
+        private double lat;
+        private double lon;
+
+        //ctor
+        public Point(double lat, double lon)
         {
-            this.lon = lon;
             this.lat = lat;
+            this.lon = lon;
         }
 
+        
+        //getter
         public double getLon()
         {
             return this.lon;
