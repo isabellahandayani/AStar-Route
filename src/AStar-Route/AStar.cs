@@ -36,7 +36,6 @@ namespace AStar_Route
             /*
             end : bool
             currNode : string
-            currCost : double
             currNodeAdj : Dictionary<string, List<string>>
             */
 
@@ -55,16 +54,18 @@ namespace AStar_Route
 
             bool end = false;
             string currNode = source;
-            double currCost = 0;
+            double cost;
 
 
             Dictionary<string, List<string>> currNodeAdj = graph.getAdjLst();
+
+            this.visitedCost.Add(currNode, 0);
+            this.parentMap.Add(currNode, source);
 
             // while target not found or there are no path found
             while (!end)
             {
                 this.path.Add(currNode);
-
                 // Check for all node adjacent with currNode
                 foreach (var x in currNodeAdj[currNode])
                 {
@@ -82,13 +83,14 @@ namespace AStar_Route
                     }
 
                     // Calculate Visited cost using haversine
+                    cost = getVisitedCost(source, parentMap[x]) + graph.haversine(parentMap[x], x) + graph.haversine(x, target);
                     if (!visitedCost.ContainsKey(x))
                     {
-                        visitedCost.Add(x, currCost + graph.haversine(currNode, x));
+                        visitedCost.Add(x, cost);
                     }
                     else
                     {
-                        visitedCost[x] = currCost + graph.haversine(currNode, x);
+                        visitedCost[x] = cost;
                     }
                 }
 
@@ -107,8 +109,8 @@ namespace AStar_Route
                         found = false;
                     }
                 }
-                currCost = visitedCost[currNode];
             }
+            this.path = cleanPath(source);
 
         }
 
@@ -153,7 +155,7 @@ namespace AStar_Route
         }
 
        
-        public List<string> getPath(string source, string target)
+        public List<string> cleanPath(string source)
         {
             // get lowest path
 
@@ -166,15 +168,20 @@ namespace AStar_Route
             /* ALGORITMA */
 
             List<string> cleaned = new List<string>();
-            
+            double cost = 0;
+
             // Reverse path
             path.Reverse();
             string curr = path[0];
+            string prev = curr;
             
             // While reconstruction have not reached path
             while(!curr.Equals(source))
             {
+                cost += graph.haversine(prev, curr);
+
                 cleaned.Add(curr);
+                prev = curr;
                 curr = parentMap[curr];
             }
 
@@ -185,10 +192,27 @@ namespace AStar_Route
             }
 
         // get path
-        public double getVisitedCost(string target)
+        public List<string> getPath()
         {
-            return this.visitedCost[target];
+            return this.path;
+        }
+
+
+        public double getVisitedCost(string source, string target)
+        {
+            double cost = 0;
+            string curr = source;
+
+            foreach (var x in path)
+            {
+                cost += graph.haversine(curr, x);
+                curr = x;
+            }
+
+            cost += graph.haversine(curr, target);
+
+
+            return cost;
         }
     }
 }
-

@@ -90,16 +90,15 @@ namespace AStar_Route
             /*
                lon, lat, a, d : double
              */
-            
+
             /* ALGORITMA */
 
 
-            // Haversine formula taken from https://user-images.githubusercontent.com/2789198/27240436-e9a459da-52d4-11e7-8f84-f96d0b312859.png
+            // Haversine formula taken from http://1.bp.blogspot.com/-eIVzIqcs_ik/U4xLXqpgBMI/AAAAAAAAQyw/vRrNAYU3U2E/s1600/Haversine+method+bakhtyiar.png
             double lon = (Math.PI/180) * (nodeLst[target].getLon() - nodeLst[source].getLon());
             double lat = (Math.PI/180) *(nodeLst[target].getLat() - nodeLst[source].getLat());
             double a = Math.Pow(Math.Sin(lat / 2), 2) + Math.Cos((Math.PI / 180) * nodeLst[target].getLat()) * Math.Cos((Math.PI / 180) * nodeLst[source].getLat()) * Math.Pow(Math.Sin(lon / 2), 2);
             double d = Math.Sqrt(a);
-            System.Diagnostics.Debug.WriteLine(source + " " + target + " " + 2 * 6371 * Math.Asin(d));
             return 2 * 6371 * Math.Asin(d);   
         }
 

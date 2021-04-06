@@ -39,10 +39,13 @@ namespace AStar_Route
 
             // Print Graph
             Microsoft.Msagl.Drawing.Graph graf = currGraph.getMSAGLGraph();
+            clear(graf);
             visualizeGraph(graf);
 
             // Hide first page show second page
             button1.Visible = false;
+            label4.Visible = false;
+            label5.Visible = false;
             button2.Visible = true;
             button3.Visible = true;
             label1.Visible = true;
@@ -50,6 +53,7 @@ namespace AStar_Route
             comboBox1.Visible = true;
             comboBox2.Visible = true;
 
+            
 
             // Add Nodes to Combobox
             addNode(currGraph, 1);
@@ -222,7 +226,7 @@ namespace AStar_Route
                 if (search.getStatus() == true)
                 {
                     Microsoft.Msagl.Drawing.Graph graf = currGraph.getMSAGLGraph();
-                    List<string> result = search.getPath(source, target);
+                    List<string> result = search.getPath();
                     Dictionary<(string, string), Microsoft.Msagl.Drawing.Edge> edgeLst = currGraph.getGUIEdge();
                     string prev = source;
                     
@@ -244,7 +248,7 @@ namespace AStar_Route
 
                     visualizeGraph(graf);
                     label3.Visible = true;
-                    label3.Text = "Cost : " + search.getVisitedCost(target).ToString();
+                    label3.Text = "Cost : " + search.getVisitedCost(source, target).ToString();
                 }
                 else
                 {
@@ -265,7 +269,7 @@ namespace AStar_Route
             // Color all node to transparent
             foreach (var x in currGraph.getNodeLst())
             {
-                Graf.FindNode(x.Key).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Transparent;
+                Graf.FindNode(x.Key).Attr.FillColor = Microsoft.Msagl.Drawing.Color.White;
             }
 
             // Color all edge to black
