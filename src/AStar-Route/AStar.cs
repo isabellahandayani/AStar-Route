@@ -198,11 +198,13 @@ namespace AStar_Route
         }
 
 
+        // Get cost
         public double getVisitedCost(string source, string target)
         {
             double cost = 0;
             string curr = source;
 
+            // iterate edge and count cost
             foreach (var x in path)
             {
                 cost += graph.haversine(curr, x);
