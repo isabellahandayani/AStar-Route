@@ -13,6 +13,7 @@ namespace AStar_Route
         private Dictionary<string, double> visitedCost;
         private List<string> path;
         private bool found;
+        private Dictionary<string, string> parentMap;
 
         public AStar(Graph graph, string source, string target)
         {
@@ -20,25 +21,30 @@ namespace AStar_Route
             this.visitedCost = new Dictionary<string, double>();
             this.graph = graph;
             this.path = new List<string>();
+            this.parentMap = new Dictionary<string, string>();
             initVisit();
 
-            bool found = false;
+
             bool end = false;
             string currNode = source;
             double currCost = 0;
 
-            
+
             Dictionary<string, List<string>> currNodeAdj = graph.getAdjLst();
-            while(!end)
+            while (!end)
             {
-                this.path.Add(currNode);   
-                foreach(var x in currNodeAdj[currNode])
+                this.path.Add(currNode);
+                foreach (var x in currNodeAdj[currNode])
                 {
-                    if(x.Equals(target))
+                    if (!parentMap.ContainsKey(x))
                     {
-                        found = true;
+                        parentMap.Add(x, currNode);
+                    }
+
+                    if (x.Equals(target))
+                    {
+                        this.found = true;
                         end = true;
-                        this.path.Add(x);
                         break;
                     }
                     else
@@ -54,7 +60,7 @@ namespace AStar_Route
                     }
                 }
 
-                if(!end)
+                if (!end)
                 {
                     expanded[currNode] = true;
                     currNode = findLowestCost();
@@ -66,17 +72,17 @@ namespace AStar_Route
                     }
                     else
                     {
-                        currCost = visitedCost[currNode];   
+                        currCost = visitedCost[currNode];
                     }
                 }
             }
-            this.found = found;
+
         }
-        
+
         public void initVisit()
         {
             expanded = new Dictionary<string, bool>();
-            foreach(var x in this.graph.getNodeLst())
+            foreach (var x in this.graph.getNodeLst())
             {
                 expanded.Add(x.Key, false);
             }
@@ -85,9 +91,9 @@ namespace AStar_Route
         public string findLowestCost()
         {
             double min = 999999999;
-            foreach(var x in visitedCost)
+            foreach (var x in visitedCost)
             {
-                if(expanded[x.Key] != true && x.Value < min)
+                if (expanded[x.Key] != true && x.Value < min)
                 {
                     min = x.Value;
                 }
@@ -97,9 +103,9 @@ namespace AStar_Route
 
         public string getKeyFromValue(double value)
         {
-            foreach(var x in visitedCost)
+            foreach (var x in visitedCost)
             {
-                if(value == x.Value)
+                if (value == x.Value)
                 {
                     return x.Key;
                 }
@@ -113,11 +119,23 @@ namespace AStar_Route
             return this.found;
         }
 
-        public List<string> getPath()
+        public List<string> getPath(string source, string target)
         {
-            return this.path;
+            List<string> cleaned = new List<string>();
+            path.Reverse();
+            string curr = path[0];
+
+            while(!curr.Equals(source))
+            {
+                cleaned.Add(curr);
+                curr = parentMap[curr];
+            }
+
+
+                cleaned.Reverse();
+                return cleaned;
+            }
+
         }
-
-
     }
-}
+
