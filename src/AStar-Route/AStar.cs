@@ -8,71 +8,105 @@ namespace AStar_Route
 {
     class AStar
     {
+        //Atribut
+
+        //Graph of map
         private Graph graph;
+
+        // Expanded status of a node
         private Dictionary<string, bool> expanded;
+
+        // Cost of already visited node
         private Dictionary<string, double> visitedCost;
+        
+        // Path of search
         private List<string> path;
+        
+        // Status of search
         private bool found;
+
+        // Parent of node
         private Dictionary<string, string> parentMap;
 
+
+        //Ctor
         public AStar(Graph graph, string source, string target)
         {
+            /* KAMUS */
+            /*
+            end : bool
+            currNode : string
+            currNodeAdj : Dictionary<string, List<string>>
+            */
+
+            /* ALGORTIMA */
+
+            // Init atribbute
             this.expanded = new Dictionary<string, bool>();
             this.visitedCost = new Dictionary<string, double>();
             this.graph = graph;
             this.path = new List<string>();
             this.parentMap = new Dictionary<string, string>();
+            
+            //Initialize expanded as false
             initVisit();
 
 
             bool end = false;
             string currNode = source;
-            double currCost = 0;
+            double cost;
 
 
             Dictionary<string, List<string>> currNodeAdj = graph.getAdjLst();
+
+            this.visitedCost.Add(currNode, 0);
+            this.parentMap.Add(currNode, source);
+
+            // while target not found or there are no path found
             while (!end)
             {
                 this.path.Add(currNode);
+                // Check for all node adjacent with currNode
                 foreach (var x in currNodeAdj[currNode])
                 {
+                    // Add parent
                     if (!parentMap.ContainsKey(x))
                     {
                         parentMap.Add(x, currNode);
                     }
 
+                    // Check if it's target
                     if (x.Equals(target))
                     {
                         this.found = true;
                         end = true;
-                        break;
+                    }
+
+                    // Calculate Visited cost using haversine
+                    cost = getVisitedCost(source, parentMap[x]) + graph.haversine(parentMap[x], x) + graph.haversine(x, target);
+                    if (!visitedCost.ContainsKey(x))
+                    {
+                        visitedCost.Add(x, cost);
                     }
                     else
                     {
-                        if (!visitedCost.ContainsKey(x))
-                        {
-                            visitedCost.Add(x, currCost + graph.haversine(currNode, x));
-                        }
-                        else
-                        {
-                            visitedCost[x] = currCost + graph.haversine(currNode, x);
-                        }
+                        visitedCost[x] = cost;
                     }
                 }
 
+                expanded[currNode] = true;
+                // Check if found
                 if (!end)
                 {
-                    expanded[currNode] = true;
+                    
+                    //find lowest cost node to be expanded
                     currNode = findLowestCost();
 
+                    // Check if there are no node left
                     if (currNode == null)
                     {
                         end = true;
                         found = false;
-                    }
-                    else
-                    {
-                        currCost = visitedCost[currNode];
                     }
                 }
             }
@@ -81,6 +115,8 @@ namespace AStar_Route
 
         public void initVisit()
         {
+            /* Assign expanded value false for all node */
+
             expanded = new Dictionary<string, bool>();
             foreach (var x in this.graph.getNodeLst())
             {
@@ -90,52 +126,94 @@ namespace AStar_Route
 
         public string findLowestCost()
         {
-            double min = 999999999;
+            /* Find nodes with lowest cost */
+
+            /* KAMUS */
+            /*
+            minNode : string
+            min : double
+            */
+
+            string minNode = null ;
+            double min = Double.MaxValue;
             foreach (var x in visitedCost)
             {
                 if (expanded[x.Key] != true && x.Value < min)
                 {
+                    minNode = x.Key;
                     min = x.Value;
                 }
             }
-            return getKeyFromValue(min);
+            return minNode;
         }
 
-        public string getKeyFromValue(double value)
-        {
-            foreach (var x in visitedCost)
-            {
-                if (value == x.Value)
-                {
-                    return x.Key;
-                }
-            }
-
-            return null;
-        }
-
+        //getter
         public bool getStatus()
         {
             return this.found;
         }
 
-        public List<string> getPath(string source, string target)
+       
+        public List<string> cleanPath(string source, string target)
         {
-            List<string> cleaned = new List<string>();
-            path.Reverse();
-            string curr = path[0];
+            // get lowest path
 
+            /* KAMUS */
+            /*
+             *cleaned : List<string>
+             *curr : string
+             */
+
+            /* ALGORITMA */
+
+            List<string> cleaned = new List<string>();
+            double cost = 0;
+
+            // Reverse path
+            path.Reverse();
+            string curr = target;
+            string prev = curr;
+            
+            // While reconstruction have not reached path
             while(!curr.Equals(source))
             {
+                cost += graph.haversine(prev, curr);
+
                 cleaned.Add(curr);
+                prev = curr;
                 curr = parentMap[curr];
             }
 
-
-                cleaned.Reverse();
-                return cleaned;
+            
+            // reverse 
+            cleaned.Reverse();
+            return cleaned;
             }
 
+        // get path
+        public List<string> getPath()
+        {
+            return this.path;
+        }
+
+
+        // Get cost
+        public double getVisitedCost(string source, string target)
+        {
+            double cost = 0;
+            string curr = source;
+
+            // iterate edge and count cost
+            foreach (var x in cleanPath(source, target))
+            {
+                cost += graph.haversine(curr, x);
+                curr = x;
+            }
+
+            cost += graph.haversine(curr, target);
+
+
+            return cost;
         }
     }
-
+}
