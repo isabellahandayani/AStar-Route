@@ -215,6 +215,20 @@ namespace AStar_Route
         /* Submit button */
         private void button3_Click(object sender, EventArgs e)
         {
+            /* KAMUS */
+            /*
+             * source, target : string
+             * search : AStar
+             * graf : Microsoft.Msagl.Drawing.Graph
+             * result : List <string>
+             * prev : string
+             * edge : Microsoft.Msagl.Drawing.Edge
+             */
+
+            /* Algoritma */
+
+
+            // Check if source and target node has been chosen
             if(comboBox1.GetItemText(comboBox1.SelectedItem).Length > 0 && comboBox2.GetItemText(comboBox2.SelectedItem).Length > 0)
             {
 
@@ -222,14 +236,18 @@ namespace AStar_Route
                 string target = comboBox2.GetItemText(comboBox2.SelectedItem);
                 Microsoft.Msagl.Drawing.Edge edge;
 
+                // Init search
                 AStar search = new AStar(currGraph, source.ToString(), target.ToString());
+                
+                // Check if there are path
                 if (search.getStatus() == true)
                 {
                     Microsoft.Msagl.Drawing.Graph graf = currGraph.getMSAGLGraph();
-                    List<string> result = search.getPath();
-                    Dictionary<(string, string), Microsoft.Msagl.Drawing.Edge> edgeLst = currGraph.getGUIEdge();
+                    // Get shortest path
+                    List<string> result = search.cleanPath(source, target);
                     string prev = source;
                     
+                    // Color node and edges
                     for (int i = 0; i < result.Count; i++)
                     {
                         if(!result[i].Equals(comboBox1.GetItemText(comboBox1.SelectedItem)) && !result[i].Equals(comboBox2.GetItemText(comboBox2.SelectedItem)))
@@ -242,10 +260,8 @@ namespace AStar_Route
                         prev = result[i];
                     }
 
-                    edge = currGraph.filterEdge(prev, target);
-                    edge.Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
 
-
+                    // Print results
                     visualizeGraph(graf);
                     label3.Visible = true;
                     label3.Text = "Cost : " + search.getVisitedCost(source, target).ToString();

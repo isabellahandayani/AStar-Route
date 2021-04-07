@@ -94,11 +94,11 @@ namespace AStar_Route
                     }
                 }
 
+                expanded[currNode] = true;
                 // Check if found
                 if (!end)
                 {
                     
-                    expanded[currNode] = true;
                     //find lowest cost node to be expanded
                     currNode = findLowestCost();
 
@@ -110,7 +110,6 @@ namespace AStar_Route
                     }
                 }
             }
-            this.path = cleanPath(source);
 
         }
 
@@ -136,7 +135,7 @@ namespace AStar_Route
             */
 
             string minNode = null ;
-            double min = 999999999;
+            double min = Double.MaxValue;
             foreach (var x in visitedCost)
             {
                 if (expanded[x.Key] != true && x.Value < min)
@@ -155,7 +154,7 @@ namespace AStar_Route
         }
 
        
-        public List<string> cleanPath(string source)
+        public List<string> cleanPath(string source, string target)
         {
             // get lowest path
 
@@ -172,7 +171,7 @@ namespace AStar_Route
 
             // Reverse path
             path.Reverse();
-            string curr = path[0];
+            string curr = target;
             string prev = curr;
             
             // While reconstruction have not reached path
@@ -205,7 +204,7 @@ namespace AStar_Route
             string curr = source;
 
             // iterate edge and count cost
-            foreach (var x in path)
+            foreach (var x in cleanPath(source, target))
             {
                 cost += graph.haversine(curr, x);
                 curr = x;
