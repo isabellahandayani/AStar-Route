@@ -1,4 +1,4 @@
-# Implementasi Algorimat A* untuk Menentukan Lintasan Terpendek
+# Implementasi Algoritma A* untuk Menentukan Lintasan Terpendek
 > Tugas Kecil III Mata Kuliah IF2211 Strategi Algoritma Tahun Akademik 2020/2021
 
 ## Table of contents
